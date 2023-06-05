@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .pagination {
+      display: inline-block;
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .pagination li {
+      display: inline;
+      margin-right: 5px;
+    }
+
+    .pagination li a {
+      color: black;
+      padding: 5px 10px;
+      text-decoration: none;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    .pagination li a:hover {
+      background-color: #f2f2f2;
+    }
+
+    .pagination .active a {
+      background-color: #4CAF50;
+      color: white;
+      border: 1px solid #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <div id="paginationContainer"></div>
+
+  <script>
+    // Define the number of pages and current page
+    const totalPages = 10;
+    let currentPage = 1;
+
+    // Create pagination elements
+    const paginationContainer = document.getElementById("paginationContainer");
+    const paginationList = document.createElement("ul");
+    paginationList.classList.add("pagination");
+
+    const previousButton = document.createElement("li");
+    const previousLink = document.createElement("a");
+    previousLink.href = "#";
+    previousLink.textContent = "Previous";
+
+    const nextButton = document.createElement("li");
+    const nextLink = document.createElement("a");
+    nextLink.href = "#";
+    nextLink.textContent = "Next";
+
+    previousButton.appendChild(previousLink);
+    nextButton.appendChild(nextLink);
+    paginationList.appendChild(previousButton);
+
+    // Event handler for previous button click
+    previousLink.addEventListener("click", function(event) {
+      event.preventDefault();
+      if (currentPage > 1) {
+        currentPage--;
+        updatePagination();
+      }
+    });
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageItem = document.createElement("li");
+      const pageLink = document.createElement("a");
+      pageLink.href = "#";
+      pageLink.textContent = i;
+
+      if (i === currentPage) {
+        pageItem.classList.add("active");
+      }
+
+      // Event handler for pagination link click
+      pageLink.addEventListener("click", function(event) {
+        event.preventDefault();
+        currentPage = i;
+        updatePagination();
+      });
+
+      pageItem.appendChild(pageLink);
+      paginationList.appendChild(pageItem);
+    }
+
+    paginationList.appendChild(nextButton);
+
+    // Event handler for next button click
+    nextLink.addEventListener("click", function(event) {
+      event.preventDefault();
+      if (currentPage < totalPages) {
+        currentPage++;
+        updatePagination();
+      }
+    });
+
+    paginationContainer.appendChild(paginationList);
+
+    // Function to update the active page and re-render pagination
+    function updatePagination() {
+      const pageItems = paginationList.querySelectorAll("li");
+      pageItems.forEach(item => item.classList.remove("active"));
+
+      const activePageItem = pageItems[currentPage];
+      activePageItem.classList.add("active");
+    }
+  </script>
+</body>
+</html>
